@@ -8,6 +8,8 @@ import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -31,6 +33,7 @@ public class BreakingEnigma {
     static String salt;
     static String saltPos;
     static String hashAlgorithm;
+    static char[] saltDic = "ABCDEFGHIJKLM".toCharArray();
     static HashMap<Character,Character> plugMap = new HashMap<>();
     
     
@@ -45,19 +48,8 @@ public class BreakingEnigma {
 
             runWords(words);
 
-            if(found){
-                System.out.println("ENCONTRADO");
-                System.out.println(enigma + " " + saltPos + " " + salt + " "+ rot + " " + shi);
-                System.out.println("Deseja guardar em CSV?");
-                String op = sc.nextLine();
-                if (op.equals("s")){
-                    toCsv();
-                }
-            }else{
-                System.out.println("NAO EXISTE");
-            } 
+            System.out.println("NAO EXISTE");    
         }
-      
     }
     
     public static void toCsv() throws IOException{
@@ -105,33 +97,30 @@ public class BreakingEnigma {
     }
     
     public static boolean checkHash(String hash){
-        int count = 0;
-        for (int i = 0; i < hash.length(); i++) {
-            if(!Character.isLetterOrDigit(hash.charAt(i))){
-                System.out.println(hash.charAt(i));
-               return false; 
+        Pattern p = Pattern.compile("^[a-zA-Z0-9]+$");
+        Matcher m = p.matcher(hash);
+        if(m.matches()){
+            switch (hash.length()){
+                case 128:
+                    hashAlgorithm = "SHA-512";
+                    break;
+                case 64:
+                    hashAlgorithm = "SHA-256";
+                    break;
+                case 32:
+                    hashAlgorithm = "MD5";
+                    break;
+                default:
+                    System.out.println("Hash não é valida");
+                    return false;               
             }
-            count ++;
+            return true;
         }
-        
-        switch (count){
-            case 128:
-                hashAlgorithm = "SHA-512";
-                break;
-            case 64:
-                hashAlgorithm = "SHA-256";
-                break;
-            case 32:
-                hashAlgorithm = "SHA-128";
-                break;
-            default:
-                System.out.println("Hash não é valida");
-                return false;               
-        }
-        return true;
+        System.out.println("Hash não é válida");
+        return false;
     }
     
-    public static String runWords(ArrayList<String> words){
+    public static String runWords(ArrayList<String> words) throws IOException{
          for(String word : words){
             System.out.println(word);
             addSalt(word); 
@@ -143,28 +132,17 @@ public class BreakingEnigma {
         return enigma;
     }
     
-    private static void addSalt(String word) {
-            String saltDic = "ABCDEFGHIJKLM";
+    private static void addSalt(String word) throws IOException {
             
-            for (int i = 0; i < saltDic.length(); i++) {
-                    if(found){
-                        break;
-                    }
-                    salt = String.valueOf(saltDic.charAt(i));
-                
-                for (int j = 0; j < saltDic.length(); j++) {
-                    salt += String.valueOf(saltDic.charAt(j));
-                    plugboard(String.format("%s%s%s",salt,word,salt));
-                    if(found){;
-                        break;
-                    }            
-                    salt = String.valueOf(saltDic.charAt(i));
-                }
-                
+            for (char letter1 : saltDic) {
+                for (char letter2 : saltDic) {
+                    salt = String.valueOf(letter1) + letter2;
+                    plugboard(String.format("%s%s%s",salt,word,salt));           
+                }               
             }
     }
     
-    public static void plugboard(String message){
+    public static void plugboard(String message) throws IOException{
         
         StringBuilder plugged = new StringBuilder();
         for (char c : message.toCharArray()){
@@ -182,23 +160,18 @@ public class BreakingEnigma {
         
     }
     
-    public static void caesarPalace(String plugged){
-        for (int i = 0; i < 26; i++) {
+    public static void caesarPalace(String plugged) throws IOException{
+        for (rot = 0; rot < 26; rot++) {
             if(found){
                 break;
             }
-            for (int j = 0; j < 26; j++) {
-                caesar(plugged, i, j);
-                if(found){
-                    rot = i;
-                    shi = j;
-                    break;
-                }
+            for (shi = 0; shi < 26; shi++) {
+                caesar(plugged, rot, shi);
             }           
         }
     }
     
-    public static void caesar(String message1, int rotation, int shift){
+    public static void caesar(String message1, int rotation, int shift) throws IOException{
             if(rotation == 0 && shift == 0){
                 isPlugged = true;
                 plugboard(message1);
@@ -220,12 +193,10 @@ public class BreakingEnigma {
                     
                     int index1 = abc.indexOf(letter1);
                     int index2 = abc.indexOf(letter2);
-                    int newIndex1 = (index1 + inc) % 26;
-                    int newIndex2 = (index2 + inc) % 26;
                     
-                    char ch = abc.charAt(newIndex1);                   
+                    char ch = abc.charAt((index1 + inc) % 26);                   
                     caesar1 += ch;
-                    ch = abc.charAt(newIndex2);
+                    ch = abc.charAt((index2 + inc) % 26);
                     caesar2 += ch;
                 }
             }
@@ -235,16 +206,16 @@ public class BreakingEnigma {
             plugboard(caesar1);
         }
     
-    public static void verifyWord(String word){
+    public static void verifyWord(String word) throws IOException{
         String encrypted0 = encrypt(word.substring(0, word.length()/2));
         String encrypted1 = encrypt(word.substring(word.length()/2, word.length()));
         
         if(encrypted0.equals(myHash)){
-            found = true;
             saltPos = "0";
+            found();
         }else if (encrypted1.equals(myHash)){
-            found = true;
-            saltPos = "1";            
+            saltPos = "1";
+            found();
         }
     }
     
@@ -263,6 +234,17 @@ public class BreakingEnigma {
             System.out.println(e); 
          }
         return sb.toString();
+    }
+    
+    public static void found() throws IOException{
+        System.out.println("ENCONTRADO");
+        System.out.println(enigma + " " + saltPos + " " + salt + " "+ rot + " " + shi);
+        System.out.println("Deseja guardar em CSV?");
+        String op = sc.nextLine().toLowerCase();
+        if (op.equals("s")){
+               toCsv();
+        }
+        System.exit(0);
     }
     
     public static boolean plugboardConvert(String map){
