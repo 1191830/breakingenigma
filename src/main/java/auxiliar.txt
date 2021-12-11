@@ -1,0 +1,9 @@
+"{'M': 'D', 'U': 'S', 'X': 'W', 'K': 'Q', 'C': 'H', 'Y': 'I', 'L': 'G', 'E': 'A', 'T': 'N', 'P': 'F'}" > plugboard
+
+4.01 > tempo ate ANIMAS
+
+NJHFFAGR > ANIMAS depois de plugboard rotores plugboard
+
+87ba6d84766e8be90f4d5cae3fd32b8a5603e9d7cf08d74d032e165e8b13e24d0ab31841bdc55d04871ae2fe1b2604fa1ed55ff943a929e3caf45cc97b6b8b4c SHA 512
+6ffe6b73242f44534a192a1574f7fe9e69fbea43df93b2077ed6bcf4e3e1ccba sha 256
+3313d16fe54e106438aff2fed81b10d0 MD5
