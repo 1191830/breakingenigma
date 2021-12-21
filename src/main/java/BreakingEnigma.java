@@ -26,6 +26,7 @@ import java.util.regex.Pattern;
 public class BreakingEnigma {
     
     static Scanner sc = new Scanner(System.in);
+    static ArrayList<String> words = new ArrayList<>();
     //password encontrada
     static String enigma= "";
     //hash que vamos receber como argumento
@@ -52,15 +53,14 @@ public class BreakingEnigma {
     public static void main(String[] args) throws IOException{
         if(args.length != 3){
             System.out.println("Por favor introduza 3 argumentos ( hash, plug, txt)");
-        }else if (checkHash(args[0]) && plugboardConvert(args[1])){
-            ArrayList<String> words;
-
+        }else if (checkHash(args[0]) && plugboardConvert(args[1]) && readFile(args[2])){
+            
             myHash = args[0];
-            words = readFile(args[2]);
-
-            runWords(words);
-
-            System.out.println("NAO EXISTE");    
+            
+            //Se não encontrar a palavra
+            if(!runWords(words)){
+                System.out.println("NAO ENCONTRADO");
+            }              
         }
     }
     
@@ -94,12 +94,12 @@ public class BreakingEnigma {
                     hashAlgorithm = "MD5";
                     break;
                 default:
-                    System.out.println("Hash não é valida");
+                    System.out.println("Hash nao e valida");
                     return false;               
             }
             return true;
         }
-        System.out.println("Hash não é válida");
+        System.out.println("Hash nao e valida");
         return false;
     }
     
@@ -386,13 +386,17 @@ public class BreakingEnigma {
          }
         return sb.toString();
     }
-    
+    /**
+     * Mostra as informacoes encontradas e pergunta se user quer gravar para csv
+     * @throws IOException 
+     */
     public static void found() throws IOException{
         System.out.println("ENCONTRADO");
-        System.out.println(enigma + " " + saltPos + " " + salt + " "+ rot + " " + shi);
+        System.out.println(enigma + " " + saltPos + " " + salt + " "+ rot + " " + shi + " " + hashAlgorithm);
         System.out.println("Deseja guardar em CSV?");
-        String op = sc.nextLine().toLowerCase();
-        if (op.equals("s")){
+        String op = sc.nextLine();
+        // aceita s ou S
+        if (op.toLowerCase().equals("s")){
                toCsv();
         }
         System.exit(0);
@@ -403,7 +407,14 @@ public class BreakingEnigma {
                         LEITURA E ESCRITA DE FICHEIROS
     ############################################################################
     */
+    
+    /**
+     * Grava para CSV a password, o salt, a posiçao do salt, rotação, shift,
+     * o algoritmo da hash e a hash, permite criar uma Mini Rainbow Table
+     * @throws IOException 
+     */
     public static void toCsv() throws IOException{
+        //Parametro true para adicionar caso o ficheiro exista
         try(FileWriter fw = new FileWriter("./pass.csv", true);
             BufferedWriter bw = new BufferedWriter(fw);
             PrintWriter out = new PrintWriter(bw))
@@ -427,10 +438,13 @@ public class BreakingEnigma {
      * @param path
      * @return 
      */
-    public static ArrayList<String> readFile(String path) {
+    public static boolean readFile(String path) {
+        if(!path.endsWith(".txt")){
+            System.out.println("O ficheiro nao e valido");
+            return false; 
+        }
         FileReader r = null;
         BufferedReader b = null;
-        ArrayList<String> fileWords = new ArrayList<>();
         //Recebe o diretorio actual e acrescenta /./ para o diretorio do ficheiro
         String currentDir = System.getProperty("user.dir") + "\\.\\";
         //retiramos ./ que o user possa introduzir
@@ -444,16 +458,17 @@ public class BreakingEnigma {
             b = new BufferedReader(r);
             String s;
             while((s = b.readLine()) != null){
-                fileWords.add(s);
+                words.add(s);
             }
             
             r.close();
             b.close();
             
+            return true;
+            
         } catch (Exception ex) {
-            System.out.println("O caminho do ficheiro não é valido");
+            System.out.println("O caminho do ficheiro nao e valido");
+            return false;
         }
-        
-        return fileWords;
     }
 }

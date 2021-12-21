@@ -1,0 +1,99 @@
+Password ; ANIMAS
+Salt ; AD
+Salt position ; 1
+Rotation ; 19
+Shift ; 3
+Hash Algorithm ; SHA-512
+Hash ; 87ba6d84766e8be90f4d5cae3fd32b8a5603e9d7cf08d74d032e165e8b13e24d0ab31841bdc55d04871ae2fe1b2604fa1ed55ff943a929e3caf45cc97b6b8b4c
+
+
+Password ; ANIMAS
+Salt ; AD
+Salt position ; 1
+Rotation ; 19
+Shift ; 3
+Hash Algorithm ; SHA-256
+Hash ; 6ffe6b73242f44534a192a1574f7fe9e69fbea43df93b2077ed6bcf4e3e1ccba
+
+
+Password ; ANIMAS
+Salt ; AD
+Salt position ; 1
+Rotation ; 19
+Shift ; 3
+Hash Algorithm ; MD5
+Hash ; 3313d16fe54e106438aff2fed81b10d0
+
+
+Password ; XOD
+Salt ; IB
+Salt position ; 0
+Rotation ; 6
+Shift ; 22
+Hash Algorithm ; SHA-512
+Hash ; 79aa500954cedca965e44c13c04afc501623cbb42ca73726816ac1576890157406509b0bd8d5a57e612f14633cb216b8da385bfc27587812be675f4c7a0f7a3e
+
+
+Password ; XOD
+Salt ; IB
+Salt position ; 0
+Rotation ; 6
+Shift ; 22
+Hash Algorithm ; SHA-256
+Hash ; 3f23f1eff6de541806a3e574859914f04a9825a4a33004ed8899fce4e12e80ac
+
+
+Password ; XOD
+Salt ; IB
+Salt position ; 0
+Rotation ; 6
+Shift ; 22
+Hash Algorithm ; MD5
+Hash ; 6b56cb032ad5060b5f35354f4bcff52e
+
+
+Password ; LAMBDA
+Salt ; LD
+Salt position ; 1
+Rotation ; 13
+Shift ; 10
+Hash Algorithm ; SHA-512
+Hash ; 0ad6c428ce7b2024a37d2bf82960f6f078e5e771c401d229bd973e41e7492b97594f2c46ad74f3d43f6d8919659d8d1ba14db8dcce56057003cfbc7fb3799624
+
+
+Password ; MOUSSE
+Salt ; BC
+Salt position ; 1
+Rotation ; 14
+Shift ; 6
+Hash Algorithm ; SHA-512
+Hash ; 7d34099a6cd09e8692355bcfa922cb3418e83e1979ff5098ad0f6d6c1ab31d6b64587423b91d4b62e33e2b1b4ba6b32dc445eb4d0c60b503a1e414e84aad912d
+
+
+Password ; DINKIE
+Salt ; BE
+Salt position ; 1
+Rotation ; 20
+Shift ; 4
+Hash Algorithm ; SHA-512
+Hash ; 5d09d2abb12bfd001dfe30ae3ed4fe383957ee313158be1b6100edd934cfc37cbb30046f271eaf643110d9f5a9ef1c3f7eb358acf352a5709bbff5c338c60bc9
+
+
+Password ; TOTTEN
+Salt ; BH
+Salt position ; 1
+Rotation ; 10
+Shift ; 11
+Hash Algorithm ; SHA-512
+Hash ; 88f161ff5c2932b85e359c13d15b1d63dcf9bb52b5ca7dc92fca113e27e0fd142915a69b9a5a8c052b2297f1f8a67b87e979ddeaeaa22c8457f3e43fbdc61db3
+
+
+Password ; DEWDEW
+Salt ; HG
+Salt position ; 1
+Rotation ; 18
+Shift ; 8
+Hash Algorithm ; SHA-512
+Hash ; dd2d220db6a5184186c1e450b73379564b45d1500d5f6eb279f13f169993347ff700ecaed2949129fd8e7aa6b63e384287f9d9787943d4a317a47425db725591
+
+
